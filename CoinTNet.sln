@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoinTNet", "CoinTNet\CoinTNet.csproj", "{B32D3CC7-AD42-45AA-937C-87C417859F56}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitcoinWisdomAPI", "libraries\BitcoinWisdomAPI\BitcoinWisdomAPI.csproj", "{FF55A6D7-3D49-48D7-9E0C-441F8FD6BBF9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptsyAPI", "libraries\CryptsyAPI\CryptsyAPI.csproj", "{03D872C9-959E-41B6-BFA1-37D30F5E2994}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GDAXAPI", "libraries\GDAXAPI\GDAXAPI.csproj", "{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -183,8 +185,43 @@ Global
 		{03D872C9-959E-41B6-BFA1-37D30F5E2994}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{03D872C9-959E-41B6-BFA1-37D30F5E2994}.Release|Win32.ActiveCfg = Release|Any CPU
 		{03D872C9-959E-41B6-BFA1-37D30F5E2994}.Release|X64.ActiveCfg = Release|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Debug SubArray|Any CPU.ActiveCfg = Debug|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Debug SubArray|Any CPU.Build.0 = Debug|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Debug SubArray|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Debug SubArray|Mixed Platforms.Build.0 = Debug|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Debug SubArray|Win32.ActiveCfg = Debug|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Debug SubArray|Win32.Build.0 = Debug|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Debug SubArray|X64.ActiveCfg = Debug|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Debug SubArray|X64.Build.0 = Debug|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Debug|Win32.Build.0 = Debug|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Debug|X64.ActiveCfg = Debug|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Debug|X64.Build.0 = Debug|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Release SubArray|Any CPU.ActiveCfg = Release|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Release SubArray|Any CPU.Build.0 = Release|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Release SubArray|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Release SubArray|Mixed Platforms.Build.0 = Release|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Release SubArray|Win32.ActiveCfg = Release|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Release SubArray|Win32.Build.0 = Release|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Release SubArray|X64.ActiveCfg = Release|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Release SubArray|X64.Build.0 = Release|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Release|Win32.ActiveCfg = Release|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Release|Win32.Build.0 = Release|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Release|X64.ActiveCfg = Release|Any CPU
+		{76F7A1BA-9C9E-40D1-A0A1-FEDD8BB884FE}.Release|X64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0A56D864-F087-4143-9E63-429D99FF9D75}
 	EndGlobalSection
 EndGlobal
