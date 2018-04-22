@@ -52,7 +52,7 @@ namespace CoinTNet.UI.Controls
             dtpFrom.Value = DateTime.Now.Date;
             Tuple<string, int>[] values = { Tuple.Create("1 min", 1), Tuple.Create("5 min", 5), Tuple.Create("15 min", 15),
                                           Tuple.Create ("1 hour", 60), Tuple.Create ("2 hours", 2*60),
-                                          Tuple.Create ("4 hours", 4*60), Tuple.Create ("6 hours", 6 * 60)};
+                                          Tuple.Create ("4 hours", 4*60), Tuple.Create ("6 hours", 6 * 60),Tuple.Create ("12 hours", 12 * 60),Tuple.Create ("24 hours", 24 * 60)};
 
 
             cbbPeriodInMin.PopulateCbbFromList(values, t => t.Item1, values[2]);
@@ -139,13 +139,13 @@ namespace CoinTNet.UI.Controls
             var bitstampEx = new Exchange("Bitstamp", ExchangesInternalCodes.Bitstamp);
             bitstampEx.FeeDeductedFromTotal = false;
 
-            var btceEx = new Exchange("BTC-e", ExchangesInternalCodes.Btce);
-            btceEx.FeeDeductedFromTotal = true;
+            //var btceEx = new Exchange("BTC-e", ExchangesInternalCodes.Btce);
+            //btceEx.FeeDeductedFromTotal = true;
 
-            var cryptsyEx = new Exchange("Cryptsy", ExchangesInternalCodes.Cryptsy);
-            cryptsyEx.BitcoinChartsCode = string.Empty;
+            //var cryptsyEx = new Exchange("Cryptsy", ExchangesInternalCodes.Cryptsy);
+            //cryptsyEx.BitcoinChartsCode = string.Empty;
 
-            var allExchanges = new[] { bitstampEx, btceEx, cryptsyEx };
+            var allExchanges = new[] { bitstampEx };//, btceEx, cryptsyEx };
             cbbExchange.PopulateCbbFromList(allExchanges, e => e.Name, bitstampEx);
         }
 

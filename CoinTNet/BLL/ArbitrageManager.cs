@@ -1,5 +1,4 @@
-﻿using BtcE;
-using CoinTNet.Common;
+﻿using CoinTNet.Common;
 using CoinTNet.Common.Constants;
 using CoinTNet.DAL;
 using CoinTNet.DAL.Exchanges;

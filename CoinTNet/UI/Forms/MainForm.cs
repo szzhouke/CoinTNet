@@ -260,8 +260,8 @@ namespace CoinTNet.UI.Forms
         /// <param name="e"></param>
         private void btnArbitrage_Click(object sender, EventArgs e)
         {
-            var f = new ArbitrageForm();
-            f.Show(this);
+            //var f = new ArbitrageForm();
+            //f.Show(this);
 
         }
 

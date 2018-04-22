@@ -30,14 +30,6 @@ namespace CoinTNet.DAL
                 {
                     ret = new BitstampWrapper();
                 }
-                else if (exchangeCode == ExchangesInternalCodes.Btce)
-                {
-                    ret = new BtceWrapper();
-                }
-                else if (exchangeCode == ExchangesInternalCodes.Cryptsy)
-                {
-                    ret = new CryptsyWrapper();
-                }
                 else
                 {
                     throw new ArgumentException("Unknown exchange code " + exchangeCode);

@@ -63,17 +63,17 @@ namespace CoinTNet.UI.Controls
                         _lastPrice = 0;
                     }
                     _24High = _24Low = null;
-                    //If Cryptsy, we cache the last 24 hour high/low
-                    if (m.Pair.Exchange.InternalCode == ExchangesInternalCodes.Cryptsy)
-                    {
-                        var mRes = (ExchangeProxyFactory.GetProxy(_selectedPair.Exchange.InternalCode) as DAL.Exchanges.CryptsyWrapper).CryptsyProxy.GetActiveMarkets();
-                        if (mRes.Success)
-                        {
-                            var market = mRes.Result.Find(ma => ma.ID == _selectedPair.ID);
-                            _24Low = market.Low;
-                            _24High = market.High;
-                        }
-                    }
+                    ////If Cryptsy, we cache the last 24 hour high/low
+                    //if (m.Pair.Exchange.InternalCode == ExchangesInternalCodes.Cryptsy)
+                    //{
+                    //    var mRes = (ExchangeProxyFactory.GetProxy(_selectedPair.Exchange.InternalCode) as DAL.Exchanges.CryptsyWrapper).CryptsyProxy.GetActiveMarkets();
+                    //    if (mRes.Success)
+                    //    {
+                    //        var market = mRes.Result.Find(ma => ma.ID == _selectedPair.ID);
+                    //        _24Low = market.Low;
+                    //        _24High = market.High;
+                    //    }
+                    //}
 
 
                 }
