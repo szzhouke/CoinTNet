@@ -29,10 +29,9 @@ namespace CoinTNet.UI.Forms
         private void InitialiseSections()
         {
             var tnBitstamp = new TreeNode("Bitstamp") { Tag = typeof(BitstampKeysControl) };
-            var tnBtce = new TreeNode("BTC-e") { Tag = typeof(BtceKeysControl) };
-            var tnCryptsy = new TreeNode("Cryptsy") { Tag = typeof(CryptsyKeysControl) };
+            var tnGDAX = new TreeNode("GDAX") { Tag = typeof(GDAXKeysControl) };
             var twitterKeys = new TreeNode("Twitter") { Tag = typeof(TwitterKeysControl) };
-            var tnKeys = new TreeNode("Keys", new[] { tnBitstamp, tnBtce, tnCryptsy, twitterKeys });
+            var tnKeys = new TreeNode("Keys", new[] { tnBitstamp, tnGDAX, twitterKeys });
 
 
             tvSections.Nodes.Add(tnKeys);

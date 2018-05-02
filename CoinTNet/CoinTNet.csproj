@@ -45,9 +45,6 @@
     <Reference Include="EntityFramework.SqlServerCompact, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.SqlServerCompact.6.2.0\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
     </Reference>
-    <Reference Include="GDAXSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\GDAX.Api.ClientLibrary.1.0.13\lib\net461\GDAXSharp.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -91,6 +88,7 @@
     <Compile Include="BLL\Attributes\StrategyAttribute.cs" />
     <Compile Include="BLL\AuthenticationService.cs" />
     <Compile Include="BLL\CandlesProvider.cs" />
+    <Compile Include="DAL\Exchanges\GDAXWrapper.cs" />
     <Compile Include="DAL\TwitterProxyFactory.cs" />
     <Compile Include="DAL\SecureStorage.cs" />
     <Compile Include="BLL\TradingIndicators\ITradingIndicator.cs" />
@@ -129,9 +127,8 @@
     <Compile Include="DO\Exchanges\TransactionList.cs" />
     <Compile Include="DO\NewsItem.cs" />
     <Compile Include="DO\Ntree.cs" />
-    <Compile Include="DO\Security\CryptsyAPIParams.cs" />
     <Compile Include="DO\Security\TwitterAPIParams.cs" />
-    <Compile Include="DO\Security\BtceAPIParams.cs" />
+    <Compile Include="DO\Security\GDAXAPIParams.cs" />
     <Compile Include="DO\Security\BitstampAPIParams.cs" />
     <Compile Include="DO\Strategies\TradingAdvice.cs" />
     <Compile Include="DO\Tweet.cs" />
@@ -139,23 +136,17 @@
     <Compile Include="UI\Common\EventAggregator\EventAggregator.cs" />
     <Compile Include="UI\Common\EventAggregator\Subscription.cs" />
     <Compile Include="UI\Common\Messages.cs" />
-    <Compile Include="UI\Controls\Options\CryptsyKeysControl.cs">
+    <Compile Include="UI\Controls\Options\GDAXKeysControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\Controls\Options\CryptsyKeysControl.Designer.cs">
-      <DependentUpon>CryptsyKeysControl.cs</DependentUpon>
+    <Compile Include="UI\Controls\Options\GDAXKeysControl.designer.cs">
+      <DependentUpon>GDAXKeysControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Controls\Options\TwitterKeysControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI\Controls\Options\TwitterKeysControl.Designer.cs">
       <DependentUpon>TwitterKeysControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Controls\Options\BtceKeysControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\Options\BtceKeysControl.Designer.cs">
-      <DependentUpon>BtceKeysControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Controls\Options\BitstampKeysControl.cs">
       <SubType>UserControl</SubType>
@@ -289,14 +280,11 @@
     </Compile>
     <Compile Include="UI\Interfaces\IOptionControl.cs" />
     <Compile Include="UI\Interfaces\IStrategySettingsControl.cs" />
-    <EmbeddedResource Include="UI\Controls\Options\CryptsyKeysControl.resx">
-      <DependentUpon>CryptsyKeysControl.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Controls\Options\GDAXKeysControl.resx">
+      <DependentUpon>GDAXKeysControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\Options\TwitterKeysControl.resx">
       <DependentUpon>TwitterKeysControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Controls\Options\BtceKeysControl.resx">
-      <DependentUpon>BtceKeysControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\Options\BitstampKeysControl.resx">
       <DependentUpon>BitstampKeysControl.cs</DependentUpon>
@@ -393,6 +381,10 @@
     <ProjectReference Include="..\libraries\BitstampAPI\BitstampAPI.csproj">
       <Project>{468085ce-c53e-4f5a-a3a7-c8b0a39c5e6d}</Project>
       <Name>BitstampAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libraries\GDAXAPI\GDAXAPI.csproj">
+      <Project>{fe9d76c2-f51f-4668-aee2-56e4a30a3aae}</Project>
+      <Name>GDAXAPI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,4 @@
-﻿using CoinTNet.Common;
-using CoinTNet.Common.Constants;
+﻿using CoinTNet.Common.Constants;
 using CoinTNet.DO;
 using CoinTNet.DO.Exchanges;
 using CoinTNet.DO.Security;
@@ -11,43 +10,37 @@ using System.Linq;
 namespace CoinTNet.DAL.Exchanges
 {
     /// <summary>
-    /// Wrapper for the Cryptsy Proxy, to offer a unified interface
+    /// Wrapper for the GDAX Proxy, to offer a unified interface
     /// </summary>
-    class CryptsyWrapper : Interfaces.IExchange
+    class GDAXWrapper : Interfaces.IExchange
     {
         #region private members
         /// <summary>
-        /// The Cryptsy proxy
+        /// The GDAX proxy
         /// </summary>
-        private CryptsyAPI.CryptsyProxy _proxy;
+        private GDAXAPI.GDAXProxy _proxy;
         #endregion
 
         /// <summary>
         /// Initialises a new instance of the class
         /// </summary>
-        public CryptsyWrapper()
+        public GDAXWrapper()
         {
-            var p = SecureStorage.GetEncryptedData<CryptsyAPIParams>(SecuredDataKeys.CryptsyAPI);
+            var p = SecureStorage.GetEncryptedData<GDAXAPIParams>(SecuredDataKeys.GDAXAPI);
             NameValueCollection section = (NameValueCollection)ConfigurationManager.GetSection("CoinTNet");
-            string publicAPIBaseUrl = string.Empty, privateAPIBaseUrl = string.Empty, serverTimeZone = string.Empty;
+            string baseUrl = string.Empty;
             if (section != null && section.Count > 0)
             {
-                publicAPIBaseUrl = section["cryptsy.publicAPIBaseUrl"];
-                privateAPIBaseUrl = section["cryptsy.privateAPIBaseUrl"];
-                serverTimeZone = section["cryptsy.serverTimeZone"];
+                baseUrl = section["bitstamp.APIBaseUrl"];
             }
 
-            var provider = TimeZoneInfo.FindSystemTimeZoneById(serverTimeZone);
-            TimeSpan providerOffset = provider.GetUtcOffset(DateTimeOffset.UtcNow);
-            int hoursDiffToUtc = -(int)providerOffset.TotalHours;
-
-            _proxy = new CryptsyAPI.CryptsyProxy(p.PublicKey, p.SecretKey, publicAPIBaseUrl, privateAPIBaseUrl, hoursDiffToUtc);
+            _proxy = new GDAXAPI.GDAXProxy(baseUrl,  p.APIKey, p.APISecret, p.APIPassphrase);
         }
 
         /// <summary>
         /// Gets a reference to the underlying proxy
         /// </summary>
-        public CryptsyAPI.CryptsyProxy CryptsyProxy
+        public GDAXAPI.GDAXProxy GDAXProxy
         {
             get { return _proxy; }
         }
@@ -59,7 +52,7 @@ namespace CoinTNet.DAL.Exchanges
         /// <returns>The ticker</returns>
         public CallResult<Ticker> GetTicker(CurrencyPair pair)
         {
-            return CallProxy(() => _proxy.GetTicker(pair.ToCryptsyPair()), t => new Ticker
+            return CallProxy(() => _proxy.GetTicker(), t => new Ticker
             {
                 Ask = t.Ask,
                 Bid = t.Bid,
@@ -76,29 +69,13 @@ namespace CoinTNet.DAL.Exchanges
         /// <returns></returns>
         public CallResult<Balance> GetBalance(CurrencyPair pair)
         {
-            //Specific treatment for that method: the USD pairs are listed in the available pairs, but corresponding balances are not returned for non verified accounts
-            var callRes = _proxy.GetInfo();
-
-            if (callRes.Success)
+            return CallProxy(() => _proxy.GetBalance(), b =>
             {
-                decimal balItem1, balItem2;
-
-                var b = callRes.Result;
-
-                if (b.BalancesAvailable.TryGetValue(pair.Item1, out balItem1) && b.BalancesAvailable.TryGetValue(pair.Item2, out balItem2))
-                {
-                    var bal = new Balance();
-                    bal.Balances[pair.Item1] = b.BalancesAvailable[pair.Item1];
-                    bal.Balances[pair.Item2] = b.BalancesAvailable[pair.Item2];
-                    return new CallResult<Balance>(bal);
-                }
-                else
-                {
-                    return new CallResult<Balance>("This currency pair is not available");
-                }
-            }
-            return new CallResult<Balance>(callRes.ErrorMessage) { Exception = callRes.Exception, ErrorCode = callRes.ErrorCode };
-
+                var bal = new Balance();
+                bal.Balances[pair.Item1] = b.AvailableBTC;
+                bal.Balances[pair.Item2] = b.AvailableUSD;
+                return bal;
+            });
         }
         /// <summary>
         /// Places a sell order
@@ -109,14 +86,14 @@ namespace CoinTNet.DAL.Exchanges
         /// <returns>Detaisl about the new order</returns>
         public CallResult<OrderDetails> PlaceSellOrder(decimal amount, decimal price, CurrencyPair pair)
         {
-            return CallProxy(() => _proxy.PlaceOrder(price, amount, CryptsyAPI.OrderTypes.Sell, pair.ToCryptsyPair()),
+            return CallProxy(() => _proxy.PlaceSellOrder(amount, price),
                 o => new OrderDetails
                 {
-                    Amount = amount,
-                    DateTime = DateTime.UtcNow,
-                    Id = o,
-                    Price = price,
-                    Type = OrderType.Sell
+                    Amount = o.Amount,
+                    DateTime = o.DateTime,
+                    Id = o.Id,
+                    Price = o.Price,
+                    Type = o.Type == 0 ? OrderType.Buy : OrderType.Sell
                 });
         }
 
@@ -129,15 +106,16 @@ namespace CoinTNet.DAL.Exchanges
         /// <returns>Detaisl about the new order</returns>
         public CallResult<OrderDetails> PlaceBuyOrder(decimal amount, decimal price, CurrencyPair pair)
         {
-            return CallProxy(() => _proxy.PlaceOrder(price, amount, CryptsyAPI.OrderTypes.Buy, pair.ToCryptsyPair()),
-               o => new OrderDetails
-               {
-                   Amount = amount,
-                   DateTime = DateTime.UtcNow,
-                   Id = o,
-                   Price = price,
-                   Type = OrderType.Sell
-               });
+            return CallProxy(() => _proxy.PlaceBuyOrder(amount, price),
+                o => new OrderDetails
+                {
+                    Amount = o.Amount,
+                    DateTime = o.DateTime,
+                    Id = o.Id,
+                    Price = o.Price,
+                    Type = o.Type == 0 ? OrderType.Buy : OrderType.Sell
+                });
+
         }
 
         /// <summary>
@@ -148,15 +126,16 @@ namespace CoinTNet.DAL.Exchanges
         /// <returns>The most recent transactions</returns>
         public CallResult<TransactionList> GetTransactions(bool lastMin, CurrencyPair pair)
         {
-            return CallProxy(() => _proxy.GetRecentTrades(pair.ToCryptsyPair()),
+            return CallProxy(() => _proxy.GetTransactions(lastMin),
                 tlist => new TransactionList
                 {
-                    Transactions = tlist.Select((t => new DO.Exchanges.Transaction
+                    Transactions = tlist.Transactions.Select((t => new DO.Exchanges.Transaction
                     {
                         Amount = t.Amount,
                         Price = t.Price,
+
                         ID = t.ID,
-                        Timestamp = BitstampAPI.UnixTimeHelper.GetFromDateTime(t.Date),
+                        Timestamp = t.Timestamp,
                         Date = t.Date
                     })).ToList()
                 });
@@ -169,7 +148,7 @@ namespace CoinTNet.DAL.Exchanges
         /// <returns>The order book (bids/asks)</returns>
         public CallResult<OrderBook> GetOrderBook(CurrencyPair pair)
         {
-            return CallProxy(() => _proxy.GetOrderBook(pair.ToCryptsyPair()),
+            return CallProxy(() => _proxy.GetOrderBook(),
                 o => new OrderBook
                 {
                     Asks = o.Asks.Select(a => new SimpleOrderInfo
@@ -194,16 +173,17 @@ namespace CoinTNet.DAL.Exchanges
         /// <returns>A list of open orders</returns>
         public CallResult<OpenOrders> GetOpenOrders(CurrencyPair pair)
         {
-            return CallProxy(() => _proxy.GetOpenOrders(pair.ToCryptsyPair()),
+            return CallProxy(() => _proxy.GetOpenOrders(),
                 openOrders => new OpenOrders
                 {
-                    List = openOrders.Select(o => new OrderDetails
+                    List = openOrders.Orders.Select(o => new OrderDetails
                     {
                         Amount = o.Amount,
                         DateTime = o.DateTime,
                         Id = o.Id,
+                        LimitPrice = o.LimitPrice,
                         Price = o.Price,
-                        Type = o.Type == CryptsyAPI.OrderTypes.Buy ? OrderType.Buy : OrderType.Sell
+                        Type = o.Type == 0 ? OrderType.Buy : OrderType.Sell
                     }).ToList()
                 });
         }
@@ -217,6 +197,7 @@ namespace CoinTNet.DAL.Exchanges
         {
             return CallProxy(() => _proxy.CancelOrder(orderId), b => b);
         }
+
         /// <summary>
         /// Gets the fee associated to a currency pair
         /// </summary>
@@ -224,11 +205,21 @@ namespace CoinTNet.DAL.Exchanges
         /// <returns>The fee</returns>
         public CallResult<Fee> GetFee(CurrencyPair pair)
         {
-            return new CallResult<Fee>(new Fee
+            return CallProxy(() => _proxy.GetFee(), f => new Fee
             {
-                BuyFee = 0.2m,
-                SellFee = 0.3m
+                BuyFee = f,
+                SellFee = f
             });
+        }
+
+        /// <summary>
+        /// Returns the list of currency pairs available on the exchange
+        /// </summary>
+        /// <returns>A list of currency pairs</returns>
+        public CallResult<CurrencyPair[]> GetCurrencyPairs()
+        {
+            var p = new[] { new CurrencyPair("BTC", "USD") };
+            return new CallResult<CurrencyPair[]>(p);
         }
 
         /// <summary>
@@ -239,23 +230,8 @@ namespace CoinTNet.DAL.Exchanges
         /// <returns></returns>
         public string GetFeeUnit(CurrencyPair pair, OrderType type)
         {
-            return pair.Item2;
+            return "USD";
         }
-
-        /// <summary>
-        /// Returns the list of currency pairs available on the exchange
-        /// </summary>
-        /// <returns>A list of currency pairs</returns>
-        public CallResult<CurrencyPair[]> GetCurrencyPairs()
-        {
-            return CallProxy(() => _proxy.GetAllCurrencyPairs(), list =>
-                {
-                    return list.Select(p => new CurrencyPair
-                        (p.Item1, p.Item2, p.ID)).ToArray();
-                });
-
-        }
-
         /// <summary>
         /// Calls the proxy and converts the result
         /// </summary>
@@ -264,23 +240,14 @@ namespace CoinTNet.DAL.Exchanges
         /// <param name="dataRetrievalFunc"></param>
         /// <param name="convFunc"></param>
         /// <returns></returns>
-        private CallResult<T> CallProxy<T, T2>(Func<CryptsyAPI.CallResult<T2>> dataRetrievalFunc, Func<T2, T> convFunc)
+        private CallResult<T> CallProxy<T, T2>(Func<GDAXAPI.CallResult<T2>> dataRetrievalFunc, Func<T2, T> convFunc)
         {
-            try
+            var callRes = dataRetrievalFunc();
+            if (callRes.Success)
             {
-                var callRes = dataRetrievalFunc();
-                if (callRes.Success)
-                {
-                    return new CallResult<T>(convFunc(callRes.Result));
-                }
-                return new CallResult<T>(callRes.ErrorMessage) { Exception = callRes.Exception, ErrorCode = callRes.ErrorCode };
+                return new CallResult<T>(convFunc(callRes.Result));
             }
-            catch (Exception e)
-            {
-                Logger.Log(e, "Exception after calling Cryptsy's proxy");
-                return new CallResult<T>(e.Message) { Exception = e };
-            }
+            return new CallResult<T>(callRes.ErrorMessage) { Exception = callRes.Exception, ErrorCode = callRes.ErrorCode };
         }
     }
-
 }

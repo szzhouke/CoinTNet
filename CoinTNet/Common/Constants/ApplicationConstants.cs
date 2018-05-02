@@ -18,7 +18,7 @@ namespace CoinTNet.Common.Constants
         /// <summary>
         /// The application's current version
         /// </summary>
-        public const string CurrentVersion = "0.0.0.5";
+        public const string CurrentVersion = "0.0.0.6";
     }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace CoinTNet.Common.Constants
         /// <summary>
         /// Key for Btc-e's API keys
         /// </summary>
-        public const string BtceAPI = "btceAPI";
+        public const string GDAXAPI = "gdaxAPI";
         /// <summary>
         /// Key for Twitter's API keys
         /// </summary>
@@ -41,6 +41,5 @@ namespace CoinTNet.Common.Constants
         /// <summary>
         /// Key for Cryptsy's API keys
         /// </summary>
-        public const string CryptsyAPI = "cryptsyAPI";
     }
 }

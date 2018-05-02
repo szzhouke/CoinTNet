@@ -29,7 +29,7 @@ namespace GDAXAPI
     /// <summary>
     /// Proxy for making calls to the  Bitsamp API
     /// </summary>
-    public class BitstampProxy
+    public class GDAXProxy
     {
         #region Private Members
         /// <summary>
@@ -43,7 +43,7 @@ namespace GDAXAPI
         /// <summary>
         /// The client ID
         /// </summary>
-        private string _clientID;
+        private string _passphrase;
         /// <summary>
         /// The API's base URL
         /// </summary>
@@ -63,15 +63,15 @@ namespace GDAXAPI
         #endregion
 
         /// <summary>
-        /// Initialises a new instance of the BitstampProxy class
+        /// Initialises a new instance of the GDAXProxy class
         /// </summary>
         /// <param name="baseURL"></param>
         /// <param name="clientID"></param>
         /// <param name="apiKey"></param>
         /// <param name="privateKey"></param>
-        public BitstampProxy(string baseURL, string clientID, string apiKey, string privateKey)
+        public GDAXProxy(string baseURL, string apiKey, string privateKey,string passphrase )
         {
-            _clientID = clientID;
+            _passphrase = passphrase;
             _apiKey = apiKey;
             _secretKey = privateKey;
             _baseURL = baseURL;
@@ -80,7 +80,7 @@ namespace GDAXAPI
         }
 
         /// <summary>
-        /// Gets Bitstamp's ticker
+        /// Gets GDAX's ticker
         /// </summary>
         /// <returns></returns>
         public CallResult<Ticker> GetTicker()
@@ -325,7 +325,7 @@ namespace GDAXAPI
         /// <returns></returns>
         private CallResult<T> MakePostRequest<T>(string url, Func<JToken, T> conversion, Dictionary<string, string> extraArgs = null)
         {
-            if (string.IsNullOrEmpty(_apiKey) || string.IsNullOrEmpty(_secretKey) || string.IsNullOrEmpty(_clientID))
+            if (string.IsNullOrEmpty(_apiKey) || string.IsNullOrEmpty(_secretKey) || string.IsNullOrEmpty(_passphrase))
             {
                 return new CallResult<T> { ErrorMessage = "Missing API Keys/Client ID", ErrorCode = ErrorCodes.InvalidAPIKeys };
             }
@@ -350,13 +350,13 @@ namespace GDAXAPI
         }
 
         /// <summary>
-        /// Returns a dictionary containing the parameters required for Bitstamp authentication
+        /// Returns a dictionary containing the parameters required for GDAX authentication
         /// </summary>
         /// <returns></returns>
         private Dictionary<string, string> GetAuthenticationArgs()
         {
             string nonce = DateTime.Now.Ticks.ToString();
-            string message = nonce + _clientID + _apiKey;
+            string message = nonce + _passphrase + _apiKey;
             var hash = _hmac.ComputeHash(UTF8Encoding.UTF8.GetBytes(message));
             string signature = BitConverter.ToString(hash).Replace("-", string.Empty).ToUpper();
 

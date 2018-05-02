@@ -38,9 +38,10 @@
             // 
             this.tvSections.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.tvSections.Location = new System.Drawing.Point(12, 12);
+            this.tvSections.Location = new System.Drawing.Point(18, 18);
+            this.tvSections.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tvSections.Name = "tvSections";
-            this.tvSections.Size = new System.Drawing.Size(121, 307);
+            this.tvSections.Size = new System.Drawing.Size(180, 470);
             this.tvSections.TabIndex = 0;
             this.tvSections.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvSections_AfterSelect);
             // 
@@ -49,9 +50,10 @@
             this.pnlPlaceHolder.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlPlaceHolder.Location = new System.Drawing.Point(149, 12);
+            this.pnlPlaceHolder.Location = new System.Drawing.Point(224, 18);
+            this.pnlPlaceHolder.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pnlPlaceHolder.Name = "pnlPlaceHolder";
-            this.pnlPlaceHolder.Size = new System.Drawing.Size(535, 307);
+            this.pnlPlaceHolder.Size = new System.Drawing.Size(802, 472);
             this.pnlPlaceHolder.TabIndex = 1;
             // 
             // btnOK
@@ -59,9 +61,10 @@
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnOK.Location = new System.Drawing.Point(519, 327);
+            this.btnOK.Location = new System.Drawing.Point(778, 503);
+            this.btnOK.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(75, 25);
+            this.btnOK.Size = new System.Drawing.Size(112, 38);
             this.btnOK.TabIndex = 2;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
@@ -71,25 +74,27 @@
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancel.Location = new System.Drawing.Point(609, 327);
+            this.btnCancel.Location = new System.Drawing.Point(914, 503);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 25);
+            this.btnCancel.Size = new System.Drawing.Size(112, 38);
             this.btnCancel.TabIndex = 3;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Snow;
-            this.ClientSize = new System.Drawing.Size(696, 364);
+            this.ClientSize = new System.Drawing.Size(1044, 560);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.pnlPlaceHolder);
             this.Controls.Add(this.tvSections);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "OptionsForm";
-            this.Text = "Options";
+            this.Text = " ";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OptionsForm_FormClosing);
             this.ResumeLayout(false);
 

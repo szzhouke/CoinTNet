@@ -138,14 +138,15 @@ namespace CoinTNet.UI.Controls
         {
             var bitstampEx = new Exchange("Bitstamp", ExchangesInternalCodes.Bitstamp);
             bitstampEx.FeeDeductedFromTotal = false;
-
+            var gdaxEx = new Exchange("GDAX", ExchangesInternalCodes.GDAX);
+            gdaxEx.FeeDeductedFromTotal = true;
             //var btceEx = new Exchange("BTC-e", ExchangesInternalCodes.Btce);
             //btceEx.FeeDeductedFromTotal = true;
 
             //var cryptsyEx = new Exchange("Cryptsy", ExchangesInternalCodes.Cryptsy);
             //cryptsyEx.BitcoinChartsCode = string.Empty;
 
-            var allExchanges = new[] { bitstampEx };//, btceEx, cryptsyEx };
+            var allExchanges = new[] { bitstampEx, gdaxEx };//, btceEx, cryptsyEx };
             cbbExchange.PopulateCbbFromList(allExchanges, e => e.Name, bitstampEx);
         }
 
