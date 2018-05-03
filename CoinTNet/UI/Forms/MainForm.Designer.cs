@@ -33,22 +33,22 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tcRightPane = new System.Windows.Forms.TabControl();
+            this.tpGeneral = new System.Windows.Forms.TabPage();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.btnSaveCandles = new System.Windows.Forms.Button();
+            this.tpNews = new System.Windows.Forms.TabPage();
             this.tickerControl1 = new CoinTNet.UI.Controls.TickerControl();
             this.dataSelector = new CoinTNet.UI.Controls.DataSelector();
             this.myChartControl = new CoinTNet.UI.Controls.MyChartControl();
             this.openOrdersControl = new CoinTNet.UI.Controls.OpenOrdersControl();
             this.orderControl = new CoinTNet.UI.Controls.OrderControl();
-            this.tcRightPane = new System.Windows.Forms.TabControl();
-            this.tpGeneral = new System.Windows.Forms.TabPage();
             this.btnOptions = new CoinTNet.UI.Controls.Common.MyButton();
-            this.btnSaveCandles = new System.Windows.Forms.Button();
-            this.btnBackTesting = new CoinTNet.UI.Controls.Common.MyButton();
-            this.btnIndicators = new CoinTNet.UI.Controls.Common.MyButton();
             this.btnArbitrage = new CoinTNet.UI.Controls.Common.MyButton();
+            this.btnIndicators = new CoinTNet.UI.Controls.Common.MyButton();
+            this.btnBackTesting = new CoinTNet.UI.Controls.Common.MyButton();
             this.orderBookControl1 = new CoinTNet.UI.Controls.OrderBookControl();
-            this.tpNews = new System.Windows.Forms.TabPage();
             this.newsListControl = new CoinTNet.UI.Controls.NewsListControl();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -56,8 +56,8 @@
             this.splitContainer1.SuspendLayout();
             this.tcRightPane.SuspendLayout();
             this.tpGeneral.SuspendLayout();
-            this.tpNews.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.tpNews.SuspendLayout();
             this.SuspendLayout();
             // 
             // tmrSlowRefresh
@@ -69,13 +69,14 @@
             // statusStrip
             // 
             this.statusStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
+            this.statusStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatus});
-            this.statusStrip.Location = new System.Drawing.Point(0, 655);
+            this.statusStrip.Location = new System.Drawing.Point(0, 647);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
             this.statusStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.statusStrip.Size = new System.Drawing.Size(1264, 22);
+            this.statusStrip.Size = new System.Drawing.Size(1264, 30);
             this.statusStrip.TabIndex = 5;
             this.statusStrip.Text = "statusStrip1";
             // 
@@ -83,7 +84,7 @@
             // 
             this.lblStatus.BackColor = System.Drawing.Color.Transparent;
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(48, 17);
+            this.lblStatus.Size = new System.Drawing.Size(72, 25);
             this.lblStatus.Text = "Ready...";
             // 
             // splitContainer1
@@ -104,10 +105,73 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tcRightPane);
-            this.splitContainer1.Size = new System.Drawing.Size(1264, 655);
+            this.splitContainer1.Size = new System.Drawing.Size(1264, 647);
             this.splitContainer1.SplitterDistance = 977;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 9;
+            // 
+            // tcRightPane
+            // 
+            this.tcRightPane.Controls.Add(this.tpGeneral);
+            this.tcRightPane.Controls.Add(this.tpNews);
+            this.tcRightPane.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tcRightPane.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tcRightPane.Location = new System.Drawing.Point(0, 0);
+            this.tcRightPane.Name = "tcRightPane";
+            this.tcRightPane.SelectedIndex = 0;
+            this.tcRightPane.Size = new System.Drawing.Size(282, 647);
+            this.tcRightPane.TabIndex = 9;
+            // 
+            // tpGeneral
+            // 
+            this.tpGeneral.Controls.Add(this.panel1);
+            this.tpGeneral.Controls.Add(this.orderBookControl1);
+            this.tpGeneral.Location = new System.Drawing.Point(4, 34);
+            this.tpGeneral.Name = "tpGeneral";
+            this.tpGeneral.Padding = new System.Windows.Forms.Padding(3);
+            this.tpGeneral.Size = new System.Drawing.Size(274, 609);
+            this.tpGeneral.TabIndex = 0;
+            this.tpGeneral.Text = "General";
+            this.tpGeneral.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.btnSaveCandles);
+            this.panel1.Controls.Add(this.btnOptions);
+            this.panel1.Controls.Add(this.btnArbitrage);
+            this.panel1.Controls.Add(this.btnIndicators);
+            this.panel1.Controls.Add(this.btnBackTesting);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(268, 186);
+            this.panel1.TabIndex = 35;
+            // 
+            // btnSaveCandles
+            // 
+            this.btnSaveCandles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveCandles.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnSaveCandles.Image = global::CoinTNet.Properties.Resources.disk;
+            this.btnSaveCandles.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSaveCandles.Location = new System.Drawing.Point(32, 24);
+            this.btnSaveCandles.Name = "btnSaveCandles";
+            this.btnSaveCandles.Size = new System.Drawing.Size(112, 25);
+            this.btnSaveCandles.TabIndex = 9;
+            this.btnSaveCandles.Text = "Save candles...";
+            this.btnSaveCandles.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnSaveCandles.UseVisualStyleBackColor = true;
+            this.btnSaveCandles.Click += new System.EventHandler(this.btnSaveCandles_Click);
+            // 
+            // tpNews
+            // 
+            this.tpNews.Controls.Add(this.newsListControl);
+            this.tpNews.Location = new System.Drawing.Point(4, 34);
+            this.tpNews.Name = "tpNews";
+            this.tpNews.Padding = new System.Windows.Forms.Padding(3);
+            this.tpNews.Size = new System.Drawing.Size(274, 609);
+            this.tpNews.TabIndex = 4;
+            this.tpNews.Text = "News";
+            this.tpNews.UseVisualStyleBackColor = true;
             // 
             // tickerControl1
             // 
@@ -133,7 +197,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.myChartControl.Location = new System.Drawing.Point(12, 327);
             this.myChartControl.Name = "myChartControl";
-            this.myChartControl.Size = new System.Drawing.Size(953, 322);
+            this.myChartControl.Size = new System.Drawing.Size(953, 314);
             this.myChartControl.TabIndex = 22;
             // 
             // openOrdersControl
@@ -152,30 +216,6 @@
             this.orderControl.Size = new System.Drawing.Size(372, 253);
             this.orderControl.TabIndex = 9;
             // 
-            // tcRightPane
-            // 
-            this.tcRightPane.Controls.Add(this.tpGeneral);
-            this.tcRightPane.Controls.Add(this.tpNews);
-            this.tcRightPane.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tcRightPane.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tcRightPane.Location = new System.Drawing.Point(0, 0);
-            this.tcRightPane.Name = "tcRightPane";
-            this.tcRightPane.SelectedIndex = 0;
-            this.tcRightPane.Size = new System.Drawing.Size(282, 655);
-            this.tcRightPane.TabIndex = 9;
-            // 
-            // tpGeneral
-            // 
-            this.tpGeneral.Controls.Add(this.panel1);
-            this.tpGeneral.Controls.Add(this.orderBookControl1);
-            this.tpGeneral.Location = new System.Drawing.Point(4, 24);
-            this.tpGeneral.Name = "tpGeneral";
-            this.tpGeneral.Padding = new System.Windows.Forms.Padding(3);
-            this.tpGeneral.Size = new System.Drawing.Size(274, 627);
-            this.tpGeneral.TabIndex = 0;
-            this.tpGeneral.Text = "General";
-            this.tpGeneral.UseVisualStyleBackColor = true;
-            // 
             // btnOptions
             // 
             this.btnOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -191,32 +231,17 @@
             this.btnOptions.UseVisualStyleBackColor = true;
             this.btnOptions.Click += new System.EventHandler(this.btnOptions_Click);
             // 
-            // btnSaveCandles
+            // btnArbitrage
             // 
-            this.btnSaveCandles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveCandles.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnSaveCandles.Image = global::CoinTNet.Properties.Resources.disk;
-            this.btnSaveCandles.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSaveCandles.Location = new System.Drawing.Point(32, 24);
-            this.btnSaveCandles.Name = "btnSaveCandles";
-            this.btnSaveCandles.Size = new System.Drawing.Size(112, 25);
-            this.btnSaveCandles.TabIndex = 9;
-            this.btnSaveCandles.Text = "Save candles...";
-            this.btnSaveCandles.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnSaveCandles.UseVisualStyleBackColor = true;
-            this.btnSaveCandles.Click += new System.EventHandler(this.btnSaveCandles_Click);
-            // 
-            // btnBackTesting
-            // 
-            this.btnBackTesting.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBackTesting.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBackTesting.Location = new System.Drawing.Point(168, 24);
-            this.btnBackTesting.Name = "btnBackTesting";
-            this.btnBackTesting.Size = new System.Drawing.Size(93, 25);
-            this.btnBackTesting.TabIndex = 33;
-            this.btnBackTesting.Text = "Back testing";
-            this.btnBackTesting.UseVisualStyleBackColor = true;
-            this.btnBackTesting.Click += new System.EventHandler(this.btnBackTesting_Click);
+            this.btnArbitrage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnArbitrage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnArbitrage.Location = new System.Drawing.Point(168, 60);
+            this.btnArbitrage.Name = "btnArbitrage";
+            this.btnArbitrage.Size = new System.Drawing.Size(75, 25);
+            this.btnArbitrage.TabIndex = 31;
+            this.btnArbitrage.Text = "Arbitrage";
+            this.btnArbitrage.UseVisualStyleBackColor = true;
+            this.btnArbitrage.Click += new System.EventHandler(this.btnArbitrage_Click);
             // 
             // btnIndicators
             // 
@@ -233,61 +258,37 @@
             this.btnIndicators.UseVisualStyleBackColor = true;
             this.btnIndicators.Click += new System.EventHandler(this.btnIndicators_Click);
             // 
-            // btnArbitrage
+            // btnBackTesting
             // 
-            this.btnArbitrage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnArbitrage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnArbitrage.Location = new System.Drawing.Point(168, 60);
-            this.btnArbitrage.Name = "btnArbitrage";
-            this.btnArbitrage.Size = new System.Drawing.Size(75, 25);
-            this.btnArbitrage.TabIndex = 31;
-            this.btnArbitrage.Text = "Arbitrage";
-            this.btnArbitrage.UseVisualStyleBackColor = true;
-            this.btnArbitrage.Click += new System.EventHandler(this.btnArbitrage_Click);
+            this.btnBackTesting.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnBackTesting.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBackTesting.Location = new System.Drawing.Point(168, 24);
+            this.btnBackTesting.Name = "btnBackTesting";
+            this.btnBackTesting.Size = new System.Drawing.Size(93, 25);
+            this.btnBackTesting.TabIndex = 33;
+            this.btnBackTesting.Text = "Back testing";
+            this.btnBackTesting.UseVisualStyleBackColor = true;
+            this.btnBackTesting.Click += new System.EventHandler(this.btnBackTesting_Click);
             // 
             // orderBookControl1
             // 
             this.orderBookControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.orderBookControl1.Location = new System.Drawing.Point(3, 394);
+            this.orderBookControl1.Location = new System.Drawing.Point(3, 376);
             this.orderBookControl1.Name = "orderBookControl1";
             this.orderBookControl1.Size = new System.Drawing.Size(268, 230);
             this.orderBookControl1.TabIndex = 29;
-            // 
-            // tpNews
-            // 
-            this.tpNews.Controls.Add(this.newsListControl);
-            this.tpNews.Location = new System.Drawing.Point(4, 24);
-            this.tpNews.Name = "tpNews";
-            this.tpNews.Padding = new System.Windows.Forms.Padding(3);
-            this.tpNews.Size = new System.Drawing.Size(274, 627);
-            this.tpNews.TabIndex = 4;
-            this.tpNews.Text = "News";
-            this.tpNews.UseVisualStyleBackColor = true;
             // 
             // newsListControl
             // 
             this.newsListControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.newsListControl.Location = new System.Drawing.Point(3, 3);
             this.newsListControl.Name = "newsListControl";
-            this.newsListControl.Size = new System.Drawing.Size(268, 621);
+            this.newsListControl.Size = new System.Drawing.Size(268, 603);
             this.newsListControl.TabIndex = 0;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.btnSaveCandles);
-            this.panel1.Controls.Add(this.btnOptions);
-            this.panel1.Controls.Add(this.btnArbitrage);
-            this.panel1.Controls.Add(this.btnIndicators);
-            this.panel1.Controls.Add(this.btnBackTesting);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(3, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(268, 186);
-            this.panel1.TabIndex = 35;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1264, 677);
@@ -304,8 +305,8 @@
             this.splitContainer1.ResumeLayout(false);
             this.tcRightPane.ResumeLayout(false);
             this.tpGeneral.ResumeLayout(false);
-            this.tpNews.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
+            this.tpNews.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -333,8 +334,6 @@
         private Controls.TickerControl tickerControl1;
         private Controls.Common.MyButton btnOptions;
         private System.Windows.Forms.Panel panel1;
-
-
     }
 }
 

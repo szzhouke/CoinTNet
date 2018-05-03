@@ -1,6 +1,7 @@
 ﻿using CoinTNet.BLL;
 using CoinTNet.BLL.TradingStrategies;
 using CoinTNet.Common.Constants;
+using CoinTNet.DAL.Exchanges;
 using CoinTNet.DO;
 using CoinTNet.UI.Common;
 using CoinTNet.UI.Common.EventAggregator;
@@ -293,6 +294,11 @@ namespace CoinTNet.UI.Forms
             }
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var gdax = new GDAXWrapper();
+            var t= gdax.GetOrderBook(new CurrencyPair("BTC", "USD"));
+        }
     }
 
 }

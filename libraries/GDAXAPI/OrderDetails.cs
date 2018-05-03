@@ -39,12 +39,12 @@ namespace GDAXAPI
 
             var od = new OrderDetails()
             {
-                Id = o.Value<long>("id"),
-                Type = o.Value<int>("type"),
+                Id = o.Value<string>("id").GetHashCode(),
+                Type = o.Value<string>("side")=="buy" ? 0 : 1,
                 Price = o.Value<decimal>("price"),
-                Amount = o.Value<decimal>("amount"),
-                DateTime = DateTime.Parse(o.Value<string>("datetime")),
-                LimitPrice = o.Value<decimal>("limit_price")
+                Amount = o.Value<decimal>("size"),
+                DateTime = DateTime.Parse(o.Value<string>("created_at")),
+                LimitPrice = o.Value<decimal>("price")
             };
 
             return od;

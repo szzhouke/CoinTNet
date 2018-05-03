@@ -36,22 +36,22 @@ namespace GDAXAPI
         /// </summary>
         public decimal Fee { get; private set; }
 
-        public static Balance CreateFromJObject(JObject o)
+        public static Balance CreateFromJArray(JArray a)
         {
-            if (o == null)
+            if (a == null)
             {
                 return null;
             }
 
             var r = new Balance()
             {
-                BalanceUSD = o.Value<decimal>("usd_balance"),
-                BalanceBTC = o.Value<decimal>("btc_balance"),
-                AvailableUSD = o.Value<decimal>("usd_available"),
-                AvailableBTC = o.Value<decimal>("btc_available"),
-                ReservedUSD = o.Value<decimal>("usd_reserved"),
-                ReservedBTC = o.Value<decimal>("btc_reserved"),
-                Fee = o.Value<decimal>("fee")
+                BalanceUSD = a.Value<decimal>("usd_balance"),
+                BalanceBTC = a.Value<decimal>("btc_balance"),
+                AvailableUSD = a.Value<decimal>("usd_available"),
+                AvailableBTC = a.Value<decimal>("btc_available"),
+                ReservedUSD = a.Value<decimal>("usd_reserved"),
+                ReservedBTC = a.Value<decimal>("btc_reserved"),
+                Fee = a.Value<decimal>("fee")
             };
 
             return r;

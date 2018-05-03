@@ -44,9 +44,8 @@ namespace GDAXAPI
                 Volume = o.Value<decimal>("volume"),
                 High = o.Value<decimal>("high"),
                 Low = o.Value<decimal>("low"),
-                Last = o.Value<decimal>("last")
+                Last = o.Value<decimal>("price")
             };
-
             return tick;
         }
     }

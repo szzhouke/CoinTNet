@@ -31,10 +31,10 @@ namespace CoinTNet.DAL.Exchanges
             string baseUrl = string.Empty;
             if (section != null && section.Count > 0)
             {
-                baseUrl = section["bitstamp.APIBaseUrl"];
+                baseUrl = section["gdax.APIBaseUrl"];
             }
 
-            _proxy = new GDAXAPI.GDAXProxy(baseUrl,  p.APIKey, p.APISecret, p.APIPassphrase);
+            _proxy = new GDAXAPI.GDAXProxy(baseUrl, p.APIKey, p.APISecret, p.APIPassphrase);
         }
 
         /// <summary>
@@ -56,8 +56,8 @@ namespace CoinTNet.DAL.Exchanges
             {
                 Ask = t.Ask,
                 Bid = t.Bid,
-                High = t.High,
-                Low = t.Low,
+                High =9299,
+                Low = 9000,
                 Last = t.Last
             });
         }
@@ -205,10 +205,10 @@ namespace CoinTNet.DAL.Exchanges
         /// <returns>The fee</returns>
         public CallResult<Fee> GetFee(CurrencyPair pair)
         {
-            return CallProxy(() => _proxy.GetFee(), f => new Fee
+            return new CallResult<Fee>(new Fee
             {
-                BuyFee = f,
-                SellFee = f
+                BuyFee = 0m,
+                SellFee = 0m
             });
         }
 

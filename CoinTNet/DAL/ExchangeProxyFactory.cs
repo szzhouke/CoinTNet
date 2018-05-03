@@ -30,6 +30,10 @@ namespace CoinTNet.DAL
                 {
                     ret = new BitstampWrapper();
                 }
+                else if (exchangeCode == ExchangesInternalCodes.GDAX)
+                {
+                    ret = new GDAXWrapper();
+                }
                 else
                 {
                     throw new ArgumentException("Unknown exchange code " + exchangeCode);

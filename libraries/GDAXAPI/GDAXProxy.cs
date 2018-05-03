@@ -5,10 +5,10 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
-
 namespace GDAXAPI
 {
     /// <summary>
@@ -55,7 +55,6 @@ namespace GDAXAPI
         /// <summary>
         /// Used to compute hmac signature to sign data sent to the private API
         /// </summary>
-        private HMACSHA256 _hmac;
         /// <summary>
         /// Message displayed when there are no API keys
         /// </summary>
@@ -65,18 +64,17 @@ namespace GDAXAPI
         /// <summary>
         /// Initialises a new instance of the GDAXProxy class
         /// </summary>
-        /// <param name="baseURL"></param>
-        /// <param name="clientID"></param>
         /// <param name="apiKey"></param>
         /// <param name="privateKey"></param>
-        public GDAXProxy(string baseURL, string apiKey, string privateKey,string passphrase )
+        /// <param name="passphrase"></param>
+        public GDAXProxy(string baseURL, string apiKey, string privateKey, string passphrase)
         {
+            authenticator = new Authenticator(apiKey, privateKey, passphrase);
+            this.clock = new Clock();
+            _baseURL = baseURL;
             _passphrase = passphrase;
             _apiKey = apiKey;
             _secretKey = privateKey;
-            _baseURL = baseURL;
-
-            _hmac = new HMACSHA256(UTF8Encoding.UTF8.GetBytes(_secretKey != null ? _secretKey : string.Empty));
         }
 
         /// <summary>
@@ -85,7 +83,7 @@ namespace GDAXAPI
         /// <returns></returns>
         public CallResult<Ticker> GetTicker()
         {
-            return MakeGetRequest<Ticker>("ticker/", result => Ticker.CreateFromJObject(result as JObject));
+            return MakeGetRequest<Ticker>("/products/BTC-USD/ticker", result => Ticker.CreateFromJObject(result as JObject));
         }
 
         /// <summary>
@@ -94,7 +92,7 @@ namespace GDAXAPI
         /// <returns></returns>
         public CallResult<OrderBook> GetOrderBook()
         {
-            return MakeGetRequest<OrderBook>("order_book/", result => OrderBook.CreateFromJObject(result as JObject));
+            return MakeGetRequest<OrderBook>("/products/BTC-USD/book/?level=3", result => OrderBook.CreateFromJObject(result as JObject));
         }
 
         /// <summary>
@@ -104,7 +102,7 @@ namespace GDAXAPI
         /// <returns></returns>
         public CallResult<TransactionList> GetTransactions(bool lastMinuteOnly = false)
         {
-            string url = "transactions/" + (lastMinuteOnly ? "?time=minute" : string.Empty);
+            string url = "/products/BTC-USD/trades" + (lastMinuteOnly ? "?time=minute" : string.Empty);
             return MakeGetRequest(url, result => TransactionList.ReadFromJObject(result as JArray));
         }
 
@@ -114,9 +112,9 @@ namespace GDAXAPI
         /// <returns></returns>
         public CallResult<Balance> GetBalance()
         {
-            return MakePostRequest("balance/", r =>
+            return MakeGetRequest("/accounts", r =>
             {
-                Balance balance = Balance.CreateFromJObject(r as JObject);
+                Balance balance = Balance.CreateFromJArray(r as JArray);
                 _fee = balance != null ? balance.Fee : 0.0M;
                 return balance;
             });
@@ -130,12 +128,14 @@ namespace GDAXAPI
         /// <returns></returns>
         public CallResult<OrderDetails> PlaceBuyOrder(decimal amount, decimal price)
         {
-            return MakePostRequest("buy/",
+            return MakePostRequest("/orders",
                 r => OrderDetails.CreateFromJObject(r as JObject),
 
                 new Dictionary<string, string> {
-                {"amount", amount.ToString(CultureInfo.InvariantCulture)},
-                    {"price",price.ToString(CultureInfo.InvariantCulture)}
+                    {"size", amount.ToString(CultureInfo.InvariantCulture)},
+                    {"price",price.ToString(CultureInfo.InvariantCulture)},
+                    {"side","buy"},
+                    { "product_id","BTC-USD"}
                 });
         }
 
@@ -147,12 +147,14 @@ namespace GDAXAPI
         /// <returns></returns>
         public CallResult<OrderDetails> PlaceSellOrder(decimal amount, decimal price)
         {
-            return MakePostRequest("sell/",
+            return MakePostRequest("/orders",
                 r => OrderDetails.CreateFromJObject(r as JObject),
 
                 new Dictionary<string, string> {
                 {"amount", amount.ToString(CultureInfo.InvariantCulture)},
-                    {"price",price.ToString(CultureInfo.InvariantCulture)}
+                    {"price",price.ToString(CultureInfo.InvariantCulture)},
+                     {"side","sell"},
+                    { "product_id","BTC-USD"}
                 });
         }
 
@@ -163,32 +165,20 @@ namespace GDAXAPI
         /// <returns></returns>
         public CallResult<bool> CancelOrder(long orderId)
         {
-            var args = GetAuthenticationArgs();
+            var args =new Dictionary<string,string>();
             args["id"] = orderId.ToString();
-            var resultStr = SendPostRequest("cancel_order/", args);
+            var resultStr = SendDeleteRequest("/orders/"+orderId);
             var result = resultStr == "true" ? new JObject() : JObject.Parse(resultStr);
             return ParseCallResult<bool>(result, r => resultStr == "true");
         }
 
-        /// <summary>
-        /// Gets the fee associated with the user's account
-        /// </summary>
-        /// <returns></returns>
-        public CallResult<decimal> GetFee()
-        {
-            if (decimal.Compare(_fee, 0.0M) == 0)
-            {
-                GetBalance();
-            }
-            return new CallResult<decimal>(_fee);
-        }
         /// <summary>
         /// Gets a list of all the user's open orders
         /// </summary>
         /// <returns></returns>
         public CallResult<OpenOrdersContainer> GetOpenOrders()
         {
-            return MakePostRequest("open_orders/", t => OpenOrdersContainer.CreateFromJObject(t as JArray));
+            return MakeGetRequest("/orders", t => OpenOrdersContainer.CreateFromJObject(t as JArray));
         }
 
         #region Private methods
@@ -200,8 +190,8 @@ namespace GDAXAPI
         /// <returns></returns>
         private static string BuildPostData(Dictionary<string, string> dataDic)
         {
-            var p = dataDic.Keys.Select(key => String.Format("{0}={1}", key, HttpUtility.UrlEncode(dataDic[key]))).ToArray();
-            return string.Join("&", p);
+            var p = dataDic.Keys.Select(key => String.Format("\"{0}\":\"{1}\"", key, dataDic[key])).ToArray();
+            return "{"+string.Join(",", p)+"}";
         }
 
         /// <summary>
@@ -247,29 +237,28 @@ namespace GDAXAPI
         /// <returns></returns>
         private string SendPostRequest(string url, Dictionary<string, string> args)
         {
-            url = _baseURL + url;
-            var dataStr = BuildPostData(args);
-            var data = Encoding.ASCII.GetBytes(dataStr);
-            var request = WebRequest.Create(new Uri(url));
+            var json = BuildPostData(args);
+            //string json = "{\"side\":\"buy\",\"size\":\"0.001\",\"price\":\"8000.0\",\"type\":\"limit\",\"product_id\":\"BTC-USD\"}";
 
-            request.Method = "POST";
-            request.Timeout = 15000;
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.ContentLength = data.Length;
-
-            using (var reqStream = request.GetRequestStream())
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(new Uri(new Uri(_baseURL), url));
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "POST";
+            var timeStamp = clock.GetTime().ToTimeStamp();
+            var signedSignature = ComputeSignature(HttpMethod.Post, authenticator.UnsignedSignature, timeStamp, url, json);
+            httpWebRequest.UserAgent = "CoinT.Net";
+            AddHeaders(httpWebRequest, signedSignature, timeStamp);
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
-                reqStream.Write(data, 0, data.Length);
-                reqStream.Close();
+
+                streamWriter.Write(json);
+                streamWriter.Flush();
+                streamWriter.Close();
             }
-            var response = request.GetResponse();
-            using (var resStream = response.GetResponseStream())
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
             {
-                using (var resStreamReader = new StreamReader(resStream))
-                {
-                    string resString = resStreamReader.ReadToEnd();
-                    return resString;
-                }
+                var result = streamReader.ReadToEnd();
+                return result;
             }
 
         }
@@ -279,10 +268,13 @@ namespace GDAXAPI
         /// </summary>
         /// <param name="url">The relative url to which the request will be sent</param>
         /// <returns>The request's result</returns>
-        private string SendGETRequest(string url)
+        private string SendGetRequest(string url)
         {
-            url = _baseURL + url;
-            var request = WebRequest.Create(new Uri(url));
+            var request = (HttpWebRequest)WebRequest.Create(new Uri(new Uri(_baseURL), url));
+            var timeStamp = clock.GetTime().ToTimeStamp();
+            var signedSignature = ComputeSignature(HttpMethod.Get, authenticator.UnsignedSignature, timeStamp, url);
+            request.UserAgent = "CoinT.Net";
+            AddHeaders(request, signedSignature, timeStamp);
             var response = request.GetResponse();
             using (var resStream = response.GetResponseStream())
             {
@@ -294,6 +286,28 @@ namespace GDAXAPI
             }
         }
 
+        /// <summary>
+        /// Sends a GET Request
+        /// </summary>
+        /// <param name="url">The relative url to which the request will be sent</param>
+        /// <returns>The request's result</returns>
+        private string SendDeleteRequest(string url)
+        {
+            var request = (HttpWebRequest)WebRequest.Create(new Uri(new Uri(_baseURL), url));
+            var timeStamp = clock.GetTime().ToTimeStamp();
+            var signedSignature = ComputeSignature(HttpMethod.Delete, authenticator.UnsignedSignature, timeStamp, url);
+            request.UserAgent = "CoinT.Net";
+            AddHeaders(request, signedSignature, timeStamp);
+            var response = request.GetResponse();
+            using (var resStream = response.GetResponseStream())
+            {
+                using (var resStreamReader = new StreamReader(resStream))
+                {
+                    string resString = resStreamReader.ReadToEnd();
+                    return resString;
+                }
+            }
+        }
         /// <summary>
         /// Makes a GET request and returns the response as an object wrapped in a CallResult
         /// </summary>
@@ -305,7 +319,7 @@ namespace GDAXAPI
         {
             try
             {
-                var resultStr = SendGETRequest(url);
+                var resultStr = SendGetRequest(url);
                 var result = JToken.Parse(resultStr);
                 return ParseCallResult(result, r => conversion(result));
             }
@@ -323,7 +337,7 @@ namespace GDAXAPI
         /// <param name="conversion">The function used to convert the response into an object</param>
         /// <param name="extraArgs">The extra parameters to pass to the POST request</param>
         /// <returns></returns>
-        private CallResult<T> MakePostRequest<T>(string url, Func<JToken, T> conversion, Dictionary<string, string> extraArgs = null)
+        private CallResult<T> MakePostRequest<T>(string url, Func<JToken, T> conversion, Dictionary<string, string> args = null)
         {
             if (string.IsNullOrEmpty(_apiKey) || string.IsNullOrEmpty(_secretKey) || string.IsNullOrEmpty(_passphrase))
             {
@@ -331,14 +345,6 @@ namespace GDAXAPI
             }
             try
             {
-                var args = GetAuthenticationArgs();
-                if (extraArgs != null)
-                {
-                    foreach (var kvp in extraArgs)
-                    {
-                        args[kvp.Key] = kvp.Value;
-                    }
-                }
                 var resultStr = SendPostRequest(url, args);
                 var result = JToken.Parse(resultStr);
                 return ParseCallResult(result, r => conversion(result));
@@ -349,25 +355,79 @@ namespace GDAXAPI
             }
         }
 
-        /// <summary>
-        /// Returns a dictionary containing the parameters required for GDAX authentication
-        /// </summary>
-        /// <returns></returns>
-        private Dictionary<string, string> GetAuthenticationArgs()
-        {
-            string nonce = DateTime.Now.Ticks.ToString();
-            string message = nonce + _passphrase + _apiKey;
-            var hash = _hmac.ComputeHash(UTF8Encoding.UTF8.GetBytes(message));
-            string signature = BitConverter.ToString(hash).Replace("-", string.Empty).ToUpper();
+        private readonly IAuthenticator authenticator;
 
-            var args = new Dictionary<string, string>()
+        private readonly IClock clock;
+
+        private static string ComputeSignature(HttpMethod httpMethod, string secret, double timestamp, string requestUri, string contentBody = "")
+        {
+            var convertedString = Convert.FromBase64String(secret);
+            var prehash = timestamp.ToString("F0", CultureInfo.InvariantCulture) + httpMethod.ToString().ToUpper() + requestUri + contentBody;
+            return HashString(prehash, convertedString);
+        }
+
+        private static string HashString(string str, byte[] secret)
+        {
+            var bytes = Encoding.UTF8.GetBytes(str);
+            using (var hmaccsha = new HMACSHA256(secret))
             {
-                { "key", _apiKey },
-                { "nonce", nonce },
-                {"signature", signature}
-            };
-            return args;
+                return Convert.ToBase64String(hmaccsha.ComputeHash(bytes));
+            }
+        }
+
+        private void AddHeaders(WebRequest request, string signedSignature, double timeStamp)
+        {
+            request.Headers.Add("CB-ACCESS-KEY", authenticator.ApiKey);
+            request.Headers.Add("CB-ACCESS-TIMESTAMP", timeStamp.ToString("F0", CultureInfo.InvariantCulture));
+            request.Headers.Add("CB-ACCESS-SIGN", signedSignature);
+            request.Headers.Add("CB-ACCESS-PASSPHRASE", authenticator.Passphrase);
         }
         #endregion
     }
+
+    public interface IClock
+    {
+        DateTime GetTime();
+    }
+    public class Clock : IClock
+    {
+        public DateTime GetTime()
+        {
+            return DateTime.UtcNow;
+        }
+    }
+    public interface IAuthenticator
+    {
+        string ApiKey { get; }
+
+        string UnsignedSignature { get; }
+
+        string Passphrase { get; }
+    }
+    public class Authenticator : IAuthenticator
+    {
+        public Authenticator(
+            string apiKey,
+            string unsignedSignature,
+            string passphrase)
+        {
+            ApiKey = apiKey;
+            UnsignedSignature = unsignedSignature;
+            Passphrase = passphrase;
+        }
+
+        public string ApiKey { get; }
+
+        public string UnsignedSignature { get; }
+
+        public string Passphrase { get; }
+    }
+    public static class DateExtensions
+    {
+        public static double ToTimeStamp(this DateTime date)
+        {
+            return (date - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
+        }
+    }
+
 }
