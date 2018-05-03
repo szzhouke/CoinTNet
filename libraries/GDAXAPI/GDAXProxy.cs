@@ -249,7 +249,6 @@ namespace GDAXAPI
             AddHeaders(httpWebRequest, signedSignature, timeStamp);
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
-
                 streamWriter.Write(json);
                 streamWriter.Flush();
                 streamWriter.Close();

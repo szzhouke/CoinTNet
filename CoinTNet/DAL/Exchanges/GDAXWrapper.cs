@@ -56,7 +56,7 @@ namespace CoinTNet.DAL.Exchanges
             {
                 Ask = t.Ask,
                 Bid = t.Bid,
-                High =9299,
+                High =9568,
                 Low = 9000,
                 Last = t.Last
             });
