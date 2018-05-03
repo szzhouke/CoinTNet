@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,8 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CoinTNet</RootNamespace>
     <AssemblyName>CointTNet</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -32,21 +35,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServerCompact">
-      <HintPath>..\packages\EntityFramework.SqlServerCompact.6.0.2\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
+    <Reference Include="EntityFramework.SqlServerCompact, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.SqlServerCompact.6.2.0\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PusherClient">
-      <HintPath>..\packages\PusherClient.0.1.0-alpha-1\lib\net40\PusherClient.dll</HintPath>
+    <Reference Include="PusherClient, Version=0.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PusherClient.0.5.1\lib\net40\PusherClient.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -57,8 +59,8 @@
       <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.0.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.5\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
@@ -76,11 +78,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BLL\ArbitrageManager.cs" />
     <Compile Include="BLL\Attributes\StrategyAttribute.cs" />
     <Compile Include="BLL\AuthenticationService.cs" />
     <Compile Include="BLL\CandlesProvider.cs" />
-    <Compile Include="DAL\Exchanges\CryptsyWrapper.cs" />
+    <Compile Include="DAL\Exchanges\GDAXWrapper.cs" />
     <Compile Include="DAL\TwitterProxyFactory.cs" />
     <Compile Include="DAL\SecureStorage.cs" />
     <Compile Include="BLL\TradingIndicators\ITradingIndicator.cs" />
@@ -100,7 +101,6 @@
     <Compile Include="Common\SecurityHelper.cs" />
     <Compile Include="Common\UserContext.cs" />
     <Compile Include="DAL\Exchanges\BitstampWrapper.cs" />
-    <Compile Include="DAL\Exchanges\BtceWrapper.cs" />
     <Compile Include="DAL\CSVCandleRepository.cs" />
     <Compile Include="DAL\ExchangeProxyFactory.cs" />
     <Compile Include="DAL\Exchanges\FakeExchange.cs" />
@@ -110,7 +110,6 @@
     <Compile Include="DO\Exchange.cs" />
     <Compile Include="DO\Exchanges\Balance.cs" />
     <Compile Include="DO\Exchanges\ErrorCodes.cs" />
-    <Compile Include="DO\Exchanges\Extensions.cs" />
     <Compile Include="DO\Exchanges\Fee.cs" />
     <Compile Include="DO\Exchanges\OpenOrders.cs" />
     <Compile Include="DO\Exchanges\OrderBook.cs" />
@@ -121,9 +120,8 @@
     <Compile Include="DO\Exchanges\TransactionList.cs" />
     <Compile Include="DO\NewsItem.cs" />
     <Compile Include="DO\Ntree.cs" />
-    <Compile Include="DO\Security\CryptsyAPIParams.cs" />
     <Compile Include="DO\Security\TwitterAPIParams.cs" />
-    <Compile Include="DO\Security\BtceAPIParams.cs" />
+    <Compile Include="DO\Security\GDAXAPIParams.cs" />
     <Compile Include="DO\Security\BitstampAPIParams.cs" />
     <Compile Include="DO\Strategies\TradingAdvice.cs" />
     <Compile Include="DO\Tweet.cs" />
@@ -131,23 +129,17 @@
     <Compile Include="UI\Common\EventAggregator\EventAggregator.cs" />
     <Compile Include="UI\Common\EventAggregator\Subscription.cs" />
     <Compile Include="UI\Common\Messages.cs" />
-    <Compile Include="UI\Controls\Options\CryptsyKeysControl.cs">
+    <Compile Include="UI\Controls\Options\GDAXKeysControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\Controls\Options\CryptsyKeysControl.Designer.cs">
-      <DependentUpon>CryptsyKeysControl.cs</DependentUpon>
+    <Compile Include="UI\Controls\Options\GDAXKeysControl.designer.cs">
+      <DependentUpon>GDAXKeysControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Controls\Options\TwitterKeysControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI\Controls\Options\TwitterKeysControl.Designer.cs">
       <DependentUpon>TwitterKeysControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Controls\Options\BtceKeysControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\Options\BtceKeysControl.Designer.cs">
-      <DependentUpon>BtceKeysControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Controls\Options\BitstampKeysControl.cs">
       <SubType>UserControl</SubType>
@@ -199,12 +191,6 @@
     </Compile>
     <Compile Include="UI\Forms\BackTestingForm.Designer.cs">
       <DependentUpon>BackTestingForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Forms\ArbitrageForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\Forms\ArbitrageForm.Designer.cs">
-      <DependentUpon>ArbitrageForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Forms\IndicatorsForm.cs">
       <SubType>Form</SubType>
@@ -287,14 +273,11 @@
     </Compile>
     <Compile Include="UI\Interfaces\IOptionControl.cs" />
     <Compile Include="UI\Interfaces\IStrategySettingsControl.cs" />
-    <EmbeddedResource Include="UI\Controls\Options\CryptsyKeysControl.resx">
-      <DependentUpon>CryptsyKeysControl.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Controls\Options\GDAXKeysControl.resx">
+      <DependentUpon>GDAXKeysControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\Options\TwitterKeysControl.resx">
       <DependentUpon>TwitterKeysControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Controls\Options\BtceKeysControl.resx">
-      <DependentUpon>BtceKeysControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\Options\BitstampKeysControl.resx">
       <DependentUpon>BitstampKeysControl.cs</DependentUpon>
@@ -319,9 +302,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\BackTestingForm.resx">
       <DependentUpon>BackTestingForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Forms\ArbitrageForm.resx">
-      <DependentUpon>ArbitrageForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\IndicatorsForm.resx">
       <DependentUpon>IndicatorsForm.cs</DependentUpon>
@@ -383,25 +363,21 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\libraries\CryptsyAPI\CryptsyAPI.csproj">
-      <Project>{03d872c9-959e-41b6-bfa1-37d30f5e2994}</Project>
-      <Name>CryptsyAPI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libraries\BitcoinWisdomAPI\BitcoinWisdomAPI.csproj">
-      <Project>{ff55a6d7-3d49-48d7-9e0c-441f8fd6bbf9}</Project>
-      <Name>BitcoinWisdomAPI</Name>
-    </ProjectReference>
     <ProjectReference Include="..\libraries\BitcoinCharts-master\BitcoinCharts.csproj">
       <Project>{211f279e-0e09-4a5d-9e9a-718adc8e1eb1}</Project>
       <Name>BitcoinCharts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libraries\BitcoinWisdomAPI\BitcoinWisdomAPI.csproj">
+      <Project>{FF55A6D7-3D49-48D7-9E0C-441F8FD6BBF9}</Project>
+      <Name>BitcoinWisdomAPI</Name>
     </ProjectReference>
     <ProjectReference Include="..\libraries\BitstampAPI\BitstampAPI.csproj">
       <Project>{468085ce-c53e-4f5a-a3a7-c8b0a39c5e6d}</Project>
       <Name>BitstampAPI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libraries\BtceApi-master\BtceApi\BtceApi.csproj">
-      <Project>{266935b5-b5b2-462c-8308-20e2bd1360b5}</Project>
-      <Name>BtceApi</Name>
+    <ProjectReference Include="..\libraries\GDAXAPI\GDAXAPI.csproj">
+      <Project>{fe9d76c2-f51f-4668-aee2-56e4a30a3aae}</Project>
+      <Name>GDAXAPI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -444,6 +420,13 @@
     if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
     xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

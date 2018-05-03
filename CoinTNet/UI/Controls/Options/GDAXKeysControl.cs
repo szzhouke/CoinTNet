@@ -10,23 +10,24 @@ namespace CoinTNet.UI.Controls.Options
     /// <summary>
     /// Enables the user to enter the authentication info for Btc-e's API
     /// </summary>
-    public partial class BtceKeysControl : UserControl, Interfaces.IOptionControl
+    public partial class GDAXKeysControl : UserControl, Interfaces.IOptionControl
     {
         /// <summary>
         /// The previous key values
         /// </summary>
-        private BtceAPIParams _apiParams;
+        private GDAXAPIParams _apiParams;
 
         /// <summary>
         /// Initialises a new instance of the class
         /// </summary>
-        public BtceKeysControl()
+        public GDAXKeysControl()
         {
             InitializeComponent();
 
-            _apiParams = SecureStorage.GetEncryptedData<BtceAPIParams>(SecuredDataKeys.BtceAPI);
+            _apiParams = SecureStorage.GetEncryptedData<GDAXAPIParams>(SecuredDataKeys.GDAXAPI);
             txtKey.Text = _apiParams.APIKey;
             txtSecret.Text = _apiParams.APISecret;
+            txtPassphrase.Text = _apiParams.APIPassphrase;
         }
 
         /// <summary>
@@ -35,16 +36,17 @@ namespace CoinTNet.UI.Controls.Options
         /// <returns>True if the data was saved correctly</returns>
         public bool Save()
         {
-            if (txtSecret.Text != _apiParams.APISecret || txtKey.Text != _apiParams.APIKey)
+            if (txtSecret.Text != _apiParams.APISecret || txtKey.Text != _apiParams.APIKey || txtPassphrase.Text != _apiParams.APIPassphrase)
             {
-                var p = new BtceAPIParams
+                var p = new GDAXAPIParams
                 {
                     APIKey = txtKey.Text,
                     APISecret = txtSecret.Text,
+                    APIPassphrase = txtPassphrase.Text,
                 };
-                SecureStorage.SaveEncryptedData(p, SecuredDataKeys.BtceAPI);
-                ExchangeProxyFactory.NotifySettingsChanged(ExchangesInternalCodes.Btce);
-                EventAggregator.Instance.Publish(new SecuredDataChanged { DataKey = ExchangesInternalCodes.Btce });
+                SecureStorage.SaveEncryptedData(p, SecuredDataKeys.GDAXAPI);
+                ExchangeProxyFactory.NotifySettingsChanged(ExchangesInternalCodes.GDAX);
+                EventAggregator.Instance.Publish(new SecuredDataChanged { DataKey = ExchangesInternalCodes.GDAX });
 
             }
             return true;

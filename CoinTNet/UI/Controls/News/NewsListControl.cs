@@ -33,17 +33,17 @@ namespace CoinTNet.UI.Controls
         public NewsListControl()
         {
             InitializeComponent();
-            _newsService = new NewsService();
-            tmrRefresh.Tick += (s, e) => UpdateNewsItems();
-            EventAggregator.Instance.Subscribe<ApplicationStartMessage>(m =>
-            {
-                UpdateNewsItems();
-                tmrRefresh.Start();
-            });
-            EventAggregator.Instance.Subscribe<NotificationReadMessage<NewsItem>>(m =>
-            {
-                NotificationPopupClicked(m.Object);
-            });
+            //_newsService = new NewsService();
+            //tmrRefresh.Tick += (s, e) => UpdateNewsItems();
+            //EventAggregator.Instance.Subscribe<ApplicationStartMessage>(m =>
+            //{
+            //    UpdateNewsItems();
+            //    tmrRefresh.Start();
+            //});
+            //EventAggregator.Instance.Subscribe<NotificationReadMessage<NewsItem>>(m =>
+            //{
+            //    NotificationPopupClicked(m.Object);
+            //});
         }
 
         /// <summary>

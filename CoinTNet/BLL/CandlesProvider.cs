@@ -1,4 +1,5 @@
 ﻿using BitcoinCharts;
+using BitcoinWisdomAPI;
 using CoinTNet.Common;
 using CoinTNet.Common.Constants;
 using CoinTNet.DAL;
@@ -25,7 +26,7 @@ namespace CoinTNet.BLL
 
         private static CSVCandleRepository _csvRepository = new CSVCandleRepository();
 
-        private static BitcoinWisdomAPI.BitcoinWisdomProxy _bitcoinWisdomProxy;
+        private static BitcoinWisdomProxy _bitcoinWisdomProxy;
 
         /// <summary>
         /// Retrieves candles. We first look in a local transactions file, then we get the missing candles from bitcoincharts or bitcoinwisdom
@@ -398,7 +399,7 @@ namespace CoinTNet.BLL
         /// Gets a reference to the BitcoinWisdom proxy
         /// </summary>
         /// <returns></returns>
-        private static BitcoinWisdomAPI.BitcoinWisdomProxy GetBitcoinWisdomProxy()
+        private static BitcoinWisdomProxy GetBitcoinWisdomProxy()
         {
             if (_bitcoinWisdomProxy == null)
             {
@@ -408,7 +409,7 @@ namespace CoinTNet.BLL
                 {
                     url = section["bitcoinwisdom.baseUrl"];
                 }
-                _bitcoinWisdomProxy = new BitcoinWisdomAPI.BitcoinWisdomProxy(url);
+                _bitcoinWisdomProxy = new BitcoinWisdomProxy(url);
             }
             return _bitcoinWisdomProxy;
         }
